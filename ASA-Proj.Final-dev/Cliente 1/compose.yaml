@@ -1,0 +1,45 @@
+
+services:
+  #dns:
+   # build:
+    #  context: ./dns
+     # dockerfile: Dockerfile
+    #container_name: dns 
+    #ports:
+    #  - "53:53/udp"
+
+  portal:
+    build:
+      context: ./portal
+      dockerfile: Dockerfile
+    container_name: portal_container 
+    networks:
+      - interna
+      - externa
+
+  web02:
+    build:
+      context: ./web02
+      dockerfile: Dockerfile
+    container_name: web02 
+    networks:
+      - interna
+      - externa
+  proxy:
+    build: 
+      context: ./proxy
+      dockerfile: Dockerfile
+    container_name: proxy
+    ports:
+      - "8888:80/tcp"
+    networks:
+      - interna
+      - externa
+    dns:
+      - 172.30.0.10
+
+networks:
+  interna:
+    driver: bridge
+  externa:
+    external: true
